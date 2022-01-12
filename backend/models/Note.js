@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 //Creation of schema ( FORMAT OF PARTICULAR THING )
 
 const NotesSchema = new Schema({
-  name: {
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+  title: {
     type: String,
     required: true,
   },
@@ -21,4 +26,4 @@ const NotesSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("user", NotesSchema);
+module.exports = mongoose.model("notes", NotesSchema);
