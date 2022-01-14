@@ -8,7 +8,7 @@ const Addnote = () => {
   const [note, setNote] = useState({
     title: "",
     description: "",
-    tag: "DEFAULT",
+    tag: "",
   });
 
   const handleClick = (e) => {

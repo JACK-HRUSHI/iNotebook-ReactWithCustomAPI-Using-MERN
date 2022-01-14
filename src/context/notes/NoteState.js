@@ -23,7 +23,7 @@ const NoteState = (props) => {
     });
 
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     setNotes(json);
   };
 
@@ -40,7 +40,8 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    // const json = response.json();
+    const json = response.json();
+    console.log(json);
 
     //Logic to add Note
 
@@ -87,7 +88,7 @@ const NoteState = (props) => {
     //API Call
 
     const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "auth-token":
@@ -96,6 +97,7 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const json = response.json();
+    console.log(json);
 
     //Logic to edit Note
 
