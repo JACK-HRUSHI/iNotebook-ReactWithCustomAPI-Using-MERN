@@ -53,7 +53,7 @@ const Addnote = () => {
             placeholder="Enter your description here"
           />
         </div>
-        {/* <div className="mb-3">
+        <div className="mb-3">
           <label htmlFor="tag" className="form-label">
             Tag
           </label>
@@ -61,19 +61,10 @@ const Addnote = () => {
             type="text"
             className="form-control"
             id="tag"
+            name="tag"
             onChange={onChange}
             placeholder="Enter your tag here"
           />
-        </div> */}
-        <div className="mb-3 form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="exampleCheck1"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            Check me out
-          </label>
         </div>
         <button type="submit" className="btn btn-primary" onClick={handleClick}>
           Add a Note
