@@ -1,49 +1,31 @@
+// import { set } from "mongoose";
 import React, { useState } from "react";
 import NoteContext from "./noteContext";
 
 const NoteState = (props) => {
   const host = "http://localhost:5000";
 
-  const notesInitial = [
-    {
-      _id: "61ded9fbc2a2bdcf47266474",
-      user: "61dec89cfb475dab811c548d",
-      title: "My title",
-      description: "Please wakeup early",
-      tag: "Personal",
-      date: "2022-01-12T13:39:07.649Z",
-      __v: 0,
-    },
-    {
-      _id: "61ded9fbc2a2bdcf472662476",
-      user: "61dec89cfb475dab811c548d",
-      title: "My title",
-      description: "Please wakeup early",
-      tag: "Personal",
-      date: "2022-01-12T13:39:07.826Z",
-      __v: 0,
-    },
-    {
-      _id: "61ded9fb5c2a2bdcf47266476",
-      user: "61dec89cfb475dab811c548d",
-      title: "My title",
-      description: "Please wakeup early",
-      tag: "Personal",
-      date: "2022-01-12T13:39:07.826Z",
-      __v: 0,
-    },
-    {
-      _id: "61ded9fbc2a2bd4cf47266476",
-      user: "61dec89cfb475dab811c548d",
-      title: "My title",
-      description: "Please wakeup early",
-      tag: "Personal",
-      date: "2022-01-12T13:39:07.826Z",
-      __v: 0,
-    },
-  ];
+  const notesInitial = [];
 
   const [notes, setNotes] = useState(notesInitial);
+
+  //Get all note
+  const getNotes = async () => {
+    //API Call
+
+    const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFkZWM4OWNmYjQ3NWRhYjgxMWM1NDhkIn0sImlhdCI6MTY0MTk5MDk5MX0.flmc6MdGjqC3A5R8QpuJxN0kaOfFQ2jIiVCUjzZW-AY",
+      },
+    });
+
+    const json = await response.json();
+    console.log(json);
+    setNotes(json);
+  };
 
   //Add a note
   const addNote = async (title, description, tag) => {
@@ -77,7 +59,22 @@ const NoteState = (props) => {
   };
 
   //Delete a note
-  const deleteNote = (id) => {
+  const deleteNote = async (id) => {
+    //API call
+
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFkZWM4OWNmYjQ3NWRhYjgxMWM1NDhkIn0sImlhdCI6MTY0MTk5MDk5MX0.flmc6MdGjqC3A5R8QpuJxN0kaOfFQ2jIiVCUjzZW-AY",
+      },
+    });
+    const json = response.json();
+    console.log(json);
+
+    //Logic to delete note
+
     console.log("Deleting the note with id" + id);
     const newNotes = notes.filter((note) => {
       return note._id !== id;
@@ -113,7 +110,9 @@ const NoteState = (props) => {
   };
   return (
     <>
-      <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote }}>
+      <NoteContext.Provider
+        value={{ notes, addNote, deleteNote, editNote, getNotes }}
+      >
         {props.children}
       </NoteContext.Provider>
     </>
