@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
 import { useNavigate } from "react-router-dom"; // useHistory is now replaced by useNavigate
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   // let history = useNavigate();
   let navigate = useNavigate(); // useHistory is now replaced by useNavigate
@@ -24,9 +24,12 @@ const Login = () => {
       //Save the auth-token & redirect user to his/her notes
       localStorage.setItem("token", json.authtoken);
       // history.push('/');
+      setCredentials({ email: "", password: "" });
       navigate("/"); // replace history.push('/') with navigate('/')
+      props.showAlert("Logged in Successfully ", "success");
     } else {
-      alert("Invalid Credentials");
+      props.showAlert("Invalid Credentials", "danger");
+      setCredentials({ email: "", password: "" });
     }
   };
 
@@ -35,14 +38,15 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-center ">
+    <div className="container">
+      <h2 className="text-center my-2">
         <strong> Login </strong>
       </h2>
+      <h6 className="text-center my-2">Login to continue to use iNotebook</h6>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
-            Email address
+            Email
           </label>
           <input
             type="email"
@@ -52,6 +56,7 @@ const Login = () => {
             value={credentials.email}
             placeholder="Enter your email here"
             onChange={onChange}
+            required
             // aria-describedby="emailHelp"
           />
           {/* <div id="emailHelp" className="form-text">
@@ -70,6 +75,7 @@ const Login = () => {
             value={credentials.password}
             placeholder="Enter your password here"
             onChange={onChange}
+            required
           />
         </div>
         <button type="submit" className="btn btn-primary">

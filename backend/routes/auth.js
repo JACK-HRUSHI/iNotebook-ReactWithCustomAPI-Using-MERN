@@ -30,9 +30,11 @@ router.post(
       let user = await User.findOne({ email: req.body.email });
 
       if (user) {
-        return res
-          .status(400)
-          .json({ error: "Sorry user with this email already exists" });
+        success = false;
+        return res.status(400).json({
+          success,
+          error: "Sorry user with this email already exists",
+        });
       }
 
       const salt = await bcrypt.genSalt(10);
@@ -51,7 +53,8 @@ router.post(
       };
 
       const authtoken = jwt.sign(data, JWT_SECRET);
-      res.json({ authtoken });
+      success = true;
+      res.json({ success, authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
@@ -78,22 +81,18 @@ router.post(
       let user = await User.findOne({ email });
       if (!user) {
         success = false;
-        return res
-          .status(400)
-          .json({
-            success,
-            errors: "Please try to login with correct credentials",
-          });
+        return res.status(400).json({
+          success,
+          errors: "Please try to login with correct credentials",
+        });
       }
       const passwordCompare = await bcrypt.compare(password, user.password);
       if (!passwordCompare) {
         success = false;
-        return res
-          .status(400)
-          .json({
-            success,
-            errors: "Please try to login with correct credentials",
-          });
+        return res.status(400).json({
+          success,
+          errors: "Please try to login with correct credentials",
+        });
       }
 
       const data = {
